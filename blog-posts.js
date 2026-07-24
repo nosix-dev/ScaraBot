@@ -13,7 +13,11 @@
    - author     : nom de l'auteur
    - authorRole : rôle de l'auteur (ex: "Développeur Principal")
    - excerpt    : texte de l'article. Tu peux mettre du <strong>gras</strong>.
-   - icon       : un emoji affiché dans le bandeau image de l'article
+   - icon       : un emoji affiché dans le bandeau si tu ne mets pas de photo
+   - image      : (optionnel) chemin ou URL d'une photo pour le bandeau.
+                  Si tu la mets, elle remplace l'emoji "icon".
+                  Ex: "images/post-421.png" (photo à côté de blog.html)
+                  ou une URL complète: "https://exemple.com/photo.jpg"
    - tag        : catégorie affichée (ex: "Mises à jour", "Coulisses")
    ========================================================================== */
 
