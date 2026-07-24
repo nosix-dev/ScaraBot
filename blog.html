@@ -7,6 +7,7 @@
 <title>Blog — ScaraBot</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Syne:wght@700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="blog-posts.js"></script>
 <style>
 :root {
   --ink:      #21242C;
@@ -104,6 +105,8 @@ nav {
 }
 .nav-links a:hover { color: var(--white); }
 .nav-links a:hover::after { transform: scaleX(1); }
+.nav-links a.active { color: var(--blue-lt); }
+.nav-links a.active::after { transform: scaleX(1); }
 .nav-right { display: flex; align-items: center; gap: 14px; }
 .lang-pill {
   font-size: 11px; letter-spacing: 1.5px; color: var(--muted);
@@ -118,101 +121,8 @@ nav {
   clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
 }
 .btn-nav:hover { opacity: .85; transform: translateY(-1px); }
-/* HERO */
-.hero {
-  position: relative; min-height: calc(100vh - 104px);
-  display: grid; grid-template-columns: 1fr 1fr;
-  align-items: center; padding: 80px 6vw 40px; gap: 60px; overflow: hidden;
-}
-.hero-grid-bg {
-  position: absolute; inset: 0;
-  background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
-}
-.hero::before {
-  content: ''; position: absolute; top: -200px; right: -100px;
-  width: 600px; height: 600px;
-  background: conic-gradient(from 0deg at 50% 50%, transparent 0deg, var(--blue-glow) 60deg, transparent 120deg);
-  border-radius: 50%; filter: blur(80px); pointer-events: none;
-}
-.hero-content { position: relative; z-index: 1; }
-.hero-label {
-  display: inline-flex; align-items: center; gap: 10px;
-  border: 1px solid var(--border2); background: var(--panel);
-  padding: 7px 16px; font-size: 10px; letter-spacing: 3px;
-  text-transform: uppercase; color: var(--blue-lt); font-weight: 600; margin-bottom: 32px;
-  opacity: 0; animation: fadeRight .6s .1s forwards;
-}
-.hero-label::before { content: ''; width: 18px; height: 1px; background: var(--blue-lt); }
-.hero-title {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(40px, 5vw, 70px); font-weight: 800;
-  line-height: 1.05; letter-spacing: -1px; color: var(--white); margin-bottom: 28px;
-  opacity: 0; animation: fadeRight .7s .25s forwards;
-}
-.hero-title .line-blue { color: var(--blue-lt); }
-.hero-desc {
-  font-size: 15px; font-weight: 300; line-height: 1.9; color: var(--muted);
-  max-width: 460px; margin-bottom: 40px;
-  opacity: 0; animation: fadeRight .7s .4s forwards;
-}
-.hero-actions {
-  display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 52px;
-  opacity: 0; animation: fadeRight .7s .55s forwards;
-}
-.btn-primary {
-  display: inline-flex; align-items: center; gap: 12px;
-  background: var(--blue); color: #fff; text-decoration: none;
-  padding: 15px 32px; font-size: 12px; font-weight: 700;
-  letter-spacing: 2px; text-transform: uppercase;
-  transition: transform .25s, box-shadow .25s;
-  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-}
-.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(140,191,201,.45); }
-.btn-primary svg { width: 18px; height: 18px; }
-.btn-ghost {
-  display: inline-flex; align-items: center; gap: 10px;
-  background: transparent; color: var(--text); text-decoration: none;
-  padding: 15px 32px; font-size: 12px; font-weight: 600;
-  letter-spacing: 2px; text-transform: uppercase;
-  border: 1px solid var(--border2); transition: border-color .2s, color .2s;
-}
-.btn-ghost:hover { border-color: var(--blue-lt); color: var(--blue-lt); }
-/* PANEL */
-.hero-panel { position: relative; z-index: 1; opacity: 0; animation: fadeLeft .8s .5s forwards; }
-.metrics-board {
-  background: var(--panel); border: 1px solid var(--border2);
-  overflow: hidden; position: relative;
-}
-.metrics-board::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--blue), var(--blue-lt), transparent);
-}
-.metrics-header {
-  padding: 20px 28px 16px; border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-}
-.metrics-title { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
-.live-badge { display: flex; align-items: center; gap: 6px; font-family: 'DM Mono', monospace; font-size: 10px; color: #4ade80; letter-spacing: 1px; }
-.live-badge::before { content: ''; width: 6px; height: 6px; background: #4ade80; border-radius: 50%; animation: pgreen 2s infinite; }
-.metrics-grid { display: grid; grid-template-columns: 1fr 1fr; }
-.metric-cell { padding: 28px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-.metric-cell:nth-child(2n) { border-right: none; }
-.metric-cell:nth-child(n+3) { border-bottom: none; }
-.metric-val { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 800; color: var(--white); line-height: 1; margin-bottom: 6px; }
-.metric-val .unit { font-size: 18px; color: var(--blue-lt); font-weight: 700; }
-.metric-key { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); font-weight: 600; }
-.metrics-bar-row { padding: 20px 28px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px; }
-.bar-label-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); letter-spacing: 1px; }
-.bar-label-row span:last-child { color: var(--blue-lt); }
-.progress-track { height: 3px; background: var(--faint); border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--blue-lt)); border-radius: 2px; animation: growBar 1.5s 1s both; }
-@keyframes growBar { from { width: 0 !important; } }
 /* SECTION */
 .section { padding: 120px 6vw; position: relative; }
-.section-intro { margin-bottom: 70px; }
-.section-intro.center { text-align: center; display:flex; flex-direction:column; align-items:center; }
 .eyebrow {
   display: inline-flex; align-items: center; gap: 12px;
   font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
@@ -223,85 +133,7 @@ nav {
   font-family: 'Syne', sans-serif; font-size: clamp(32px, 4vw, 52px);
   font-weight: 800; line-height: 1.08; letter-spacing: -0.5px; color: var(--white); max-width: 620px;
 }
-.section-p { font-size: 15px; font-weight: 300; color: var(--muted); line-height: 1.9; max-width: 520px; margin-top: 18px; }
 .rule { height: 1px; background: var(--border); margin: 0 6vw; }
-/* STATS */
-.stats-section { background: var(--deep); }
-.stats-grid { display: grid; grid-template-columns: repeat(4,1fr); border: 1px solid var(--border); margin-top: 60px; }
-.stat-cell { padding: 44px 32px; border-right: 1px solid var(--border); text-align: center; }
-.stat-cell:last-child { border-right: none; }
-.stat-val { font-family:'Syne',sans-serif; font-size: 44px; font-weight: 800; color: var(--blue-lt); line-height: 1; }
-.stat-val .unit { font-size: 22px; color: var(--white); }
-.stat-key { margin-top: 12px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); font-weight: 600; }
-/* FEATURES GRID */
-.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--border); }
-.feature { padding: 52px 40px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); position: relative; overflow: hidden; transition: background .3s; }
-.feature:nth-child(3n) { border-right: none; }
-.feature:nth-last-child(-n+3) { border-bottom: none; }
-.feature::after { content: ''; position: absolute; bottom: 0; left: 40px; right: 40px; height: 1px; background: var(--blue-lt); transform: scaleX(0); transform-origin: left; transition: transform .5s; }
-.feature:hover { background: var(--panel); }
-.feature:hover::after { transform: scaleX(1); }
-.feature-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--blue-lt); letter-spacing: 2px; margin-bottom: 28px; opacity: .7; }
-.feature-icon { font-size: 32px; margin-bottom: 20px; display: block; }
-.feature-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--white); letter-spacing: -.3px; margin-bottom: 14px; }
-.feature-text { font-size: 14px; font-weight: 300; color: var(--muted); line-height: 1.8; }
-.feature-link { display:inline-flex; align-items:center; gap:8px; margin-top:18px; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; font-weight:700; color:var(--blue-lt); text-decoration:none; }
-/* PRICING */
-.pricing-section { background: var(--deep); }
-.pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 60px; }
-.plan {
-  background: var(--panel); border: 1px solid var(--border2); padding: 40px 34px;
-  display: flex; flex-direction: column; position: relative; overflow: hidden;
-}
-.plan.featured { border-color: var(--blue-lt); box-shadow: 0 0 0 1px var(--blue-lt), 0 24px 60px rgba(140,191,201,.15); }
-.plan.featured::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--blue), var(--blue-lt)); }
-.plan-tag { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--blue-lt); font-weight: 700; margin-bottom: 14px; }
-.plan-name { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; color: var(--white); margin-bottom: 8px; }
-.plan-price { font-family: 'Syne', sans-serif; font-size: 40px; font-weight: 800; color: var(--white); margin-bottom: 4px; }
-.plan-price .per { font-size: 13px; color: var(--muted); font-weight: 400; }
-.plan-sub { font-size: 12px; color: var(--muted); font-weight: 300; margin-bottom: 28px; }
-.plan-list { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; flex-grow: 1; }
-.plan-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; font-weight: 300; color: var(--text); line-height: 1.5; }
-.plan-list li::before { content: '✓'; color: var(--blue-lt); font-weight: 700; flex-shrink: 0; }
-.plan .btn-primary, .plan .btn-ghost { justify-content: center; width: 100%; }
-/* BLOG */
-.blog-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 60px; }
-.blog-card { background: var(--panel); border: 1px solid var(--border); text-decoration: none; display: flex; flex-direction: column; overflow: hidden; transition: border-color .25s, transform .25s; }
-.blog-card:hover { border-color: var(--blue-lt); transform: translateY(-4px); }
-.blog-thumb { height: 150px; background: linear-gradient(135deg, var(--card), var(--panel)); position: relative; display:flex; align-items:center; justify-content:center; border-bottom: 1px solid var(--border); }
-.blog-thumb::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 24px 24px; }
-.blog-thumb span { position: relative; font-size: 34px; }
-.blog-body { padding: 26px 26px 28px; }
-.blog-date { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.5px; color: var(--blue-lt); text-transform: uppercase; margin-bottom: 12px; }
-.blog-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800; color: var(--white); line-height: 1.35; margin-bottom: 10px; }
-.blog-desc { font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.7; }
-/* CTA */
-.cta-block { position: relative; overflow: hidden; background: var(--ink); border-top: 1px solid var(--border); }
-.cta-block::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 50% 100%, rgba(140,191,201,.1) 0%, transparent 70%); pointer-events: none; }
-.cta-inner { position: relative; z-index: 1; padding: 140px 6vw; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-.bot-card { background: var(--panel); border: 1px solid var(--border2); padding: 40px; position: relative; overflow: hidden; }
-.bot-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--blue), var(--blue-lt)); }
-.bc-header { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
-.bc-avatar { width: 52px; height: 52px; background: var(--blue); border-radius: 14px; display: flex; align-items: center; justify-content: center; }
-.bc-avatar svg { width: 28px; height: 28px; fill: #fff; }
-.bc-name { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--white); }
-.bc-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
-.bc-stats { display: flex; gap: 28px; margin-bottom: 28px; }
-.bc-stat { display: flex; flex-direction: column; gap: 4px; }
-.bc-stat-val { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--white); }
-.bc-stat-key { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
-.btn-invite {
-  width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px;
-  background: var(--blue); color: #fff; text-decoration: none;
-  padding: 16px; font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-  transition: transform .2s, box-shadow .2s; position: relative;
-  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-}
-.btn-invite:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(140,191,201,.5); }
-.btn-invite svg { width: 20px; height: 20px; }
-.checklist { list-style: none; display: flex; flex-direction: column; gap: 14px; }
-.checklist li { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; font-weight: 300; color: var(--muted); line-height: 1.5; }
-.checklist li::before { content: '→'; color: var(--blue-lt); font-size: 14px; flex-shrink: 0; margin-top: 1px; }
 /* FOOTER */
 footer { background: var(--deep); border-top: 1px solid var(--border); padding: 70px 6vw 40px; }
 .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; padding-bottom: 52px; border-bottom: 1px solid var(--border); margin-bottom: 36px; }
@@ -318,31 +150,101 @@ footer { background: var(--deep); border-top: 1px solid var(--border); padding: 
 .footer-copy { font-size: 12px; color: var(--faint); letter-spacing: 1px; }
 .footer-legal { font-size: 11px; color: var(--faint); letter-spacing: 1px; font-style: italic; }
 /* ANIM */
-@keyframes fadeRight { from{opacity:0;transform:translateX(-28px)} to{opacity:1;transform:translateX(0)} }
-@keyframes fadeLeft  { from{opacity:0;transform:translateX(28px)}  to{opacity:1;transform:translateX(0)} }
 .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s cubic-bezier(.25,.46,.45,.94), transform .7s cubic-bezier(.25,.46,.45,.94); }
 .reveal.on { opacity: 1; transform: translateY(0); }
 .reveal-delay-1 { transition-delay: .1s; }
 .reveal-delay-2 { transition-delay: .2s; }
 .reveal-delay-3 { transition-delay: .3s; }
+
+/* ===== BLOG LAYOUT (façon liste RaidProtect) ===== */
+.blog-page {
+  display: grid; grid-template-columns: 260px 1fr; gap: 70px;
+  padding: 60px 6vw 140px; align-items: start;
+}
+.blog-sidebar { position: sticky; top: 100px; }
+.blog-sidebar-title {
+  font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800;
+  color: var(--white); margin-bottom: 28px;
+}
+.blog-sidebar-year {
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--blue-lt); font-weight: 700; margin-bottom: 16px;
+}
+.blog-sidebar-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.blog-sidebar-list a {
+  font-size: 13px; font-weight: 400; line-height: 1.5; color: var(--muted);
+  text-decoration: none; display: block; transition: color .2s;
+  border-left: 2px solid transparent; padding-left: 12px;
+}
+.blog-sidebar-list a:hover, .blog-sidebar-list a.active {
+  color: var(--white); border-left-color: var(--blue-lt);
+}
+
+.blog-main { display: flex; flex-direction: column; gap: 0; }
+.blog-post {
+  padding: 56px 0; border-bottom: 1px solid var(--border);
+}
+.blog-post:first-child { padding-top: 0; }
+.blog-post:last-child { border-bottom: none; }
+.blog-post-title {
+  font-family: 'Syne', sans-serif; font-size: clamp(24px, 3vw, 32px);
+  font-weight: 800; line-height: 1.2; color: var(--white); text-decoration: none;
+  display: inline-block; margin-bottom: 14px;
+}
+.blog-post-title:hover { color: var(--blue-lt); }
+.blog-post-meta {
+  font-family: 'DM Mono', monospace; font-size: 12px; color: var(--faint);
+  letter-spacing: .5px; margin-bottom: 26px;
+}
+.blog-post-authors { display: flex; flex-wrap: wrap; gap: 24px; margin-bottom: 26px; }
+.blog-author { display: flex; align-items: center; gap: 12px; }
+.blog-author-avatar {
+  width: 40px; height: 40px; border-radius: 50%; background: var(--panel);
+  border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 14px; color: var(--blue-lt);
+  flex-shrink: 0;
+}
+.blog-author-name { font-size: 13px; font-weight: 700; color: var(--white); }
+.blog-author-role { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.blog-post-excerpt {
+  font-size: 15px; font-weight: 300; line-height: 1.9; color: var(--muted); margin-bottom: 28px;
+}
+.blog-post-excerpt strong { color: var(--text); font-weight: 600; }
+.blog-post-thumb {
+  height: 220px; border-radius: 4px; background: linear-gradient(135deg, var(--card), var(--panel));
+  border: 1px solid var(--border); position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 26px;
+}
+.blog-post-thumb::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+.blog-post-thumb span { position: relative; font-size: 56px; }
+.blog-post-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+.blog-tags { display: flex; gap: 10px; flex-wrap: wrap; }
+.blog-tag {
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700;
+  color: var(--blue-lt); border: 1px solid var(--border2); padding: 6px 12px;
+}
+.blog-post-more {
+  font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--blue-lt); text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+}
+.blog-post-more:hover { text-decoration: underline; }
+
+@media (max-width: 900px) {
+  .blog-page { grid-template-columns: 1fr; gap: 40px; }
+  .blog-sidebar { position: static; }
+}
 /* RESPONSIVE */
 @media (max-width: 980px) {
-  .hero { grid-template-columns: 1fr; min-height: auto; }
-  .features-grid, .pricing-grid, .blog-grid { grid-template-columns: 1fr; }
-  .feature { border-right: none !important; }
-  .feature:not(:last-child) { border-bottom: 1px solid var(--border) !important; }
-  .stats-grid { grid-template-columns: 1fr 1fr; }
-  .stat-cell:nth-child(2n) { border-right: none; }
-  .stat-cell:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
-  .cta-inner { grid-template-columns: 1fr; }
-  .footer-top { grid-template-columns: 1fr 1fr; }
   .nav-links { display: none; }
+  .footer-top { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 580px) {
   .topbar, .announce { display: none; }
   .footer-top { grid-template-columns: 1fr; }
-  .stats-grid { grid-template-columns: 1fr; }
-  .stat-cell { border-right: none !important; border-bottom: 1px solid var(--border); }
 }
 </style>
 </head>
@@ -352,8 +254,7 @@ footer { background: var(--deep); border-top: 1px solid var(--border); padding: 
 <div id="cur-ring"></div>
 
 <!-- ANNONCE -->
-<div class="announce">La mise à jour <a href="#blog">ScaraBot v4.2.1</a> est disponible dès maintenant !</div>
-
+<div class="announce">La mise à jour <a href="#post-421">ScaraBot v4.2.1</a> est disponible dès maintenant !</div>
 
 <!-- TOPBAR -->
 <div class="topbar">
@@ -363,7 +264,6 @@ footer { background: var(--deep); border-top: 1px solid var(--border); padding: 
   </div>
   <div class="topbar-status">Bot en ligne</div>
 </div>
-
 
 <!-- NAV -->
 <nav>
@@ -378,7 +278,7 @@ footer { background: var(--deep); border-top: 1px solid var(--border); padding: 
     <li><a href="index.html">Accueil</a></li>
     <li><a href="fonctionnalites.html">Fonctionnalités</a></li>
     <li><a href="tarifs.html">Tarifs</a></li>
-    <li><a href="blog.html">Blog</a></li>
+    <li><a href="blog.html" class="active">Blog</a></li>
     <li><a href="support.html">Support</a></li>
   </ul>
   <div class="nav-right">
@@ -389,42 +289,17 @@ footer { background: var(--deep); border-top: 1px solid var(--border); padding: 
   </div>
 </nav>
 
-
 <!-- BLOG -->
-<section class="section" id="blog">
-  <div class="section-intro reveal">
-    <div class="eyebrow">Blog</div>
-    <h2 class="section-h">Les dernières<br>actualités.</h2>
-    <p class="section-p">Nouveautés, mises à jour et coulisses du développement de ScaraBot.</p>
-  </div>
-  <div class="blog-grid">
-    <a href="#" class="blog-card reveal reveal-delay-1">
-      <div class="blog-thumb"><span>🆕</span></div>
-      <div class="blog-body">
-        <div class="blog-date">Version 4.2.1</div>
-        <div class="blog-title">Refonte du système de modération et nouveaux logs</div>
-        <div class="blog-desc">Découvrez les nouvelles commandes de modération et l'amélioration des journaux d'événements.</div>
-      </div>
-    </a>
-    <a href="#" class="blog-card reveal reveal-delay-2">
-      <div class="blog-thumb"><span>⭐</span></div>
-      <div class="blog-body">
-        <div class="blog-date">Premium</div>
-        <div class="blog-title">Lancement de l'offre Premium ScaraBot</div>
-        <div class="blog-desc">Toutes les nouveautés exclusives disponibles avec l'abonnement Premium.</div>
-      </div>
-    </a>
-    <a href="#" class="blog-card reveal reveal-delay-3">
-      <div class="blog-thumb"><span>📈</span></div>
-      <div class="blog-body">
-        <div class="blog-date">Coulisses</div>
-        <div class="blog-title">Comment ScaraBot gère plusieurs serveurs simultanément</div>
-        <div class="blog-desc">Un aperçu de l'architecture technique derrière la stabilité du bot.</div>
-      </div>
-    </a>
-  </div>
-</section>
+<section class="blog-page" id="blog">
 
+  <aside class="blog-sidebar reveal">
+    <div class="blog-sidebar-title">Blog</div>
+    <div class="blog-sidebar-year">2026</div>
+    <ul class="blog-sidebar-list" id="blog-sidebar-list"></ul>
+  </aside>
+
+  <div class="blog-main" id="blog-main"></div>
+</section>
 
 <!-- FOOTER -->
 <footer>
@@ -479,8 +354,40 @@ footer { background: var(--deep); border-top: 1px solid var(--border); padding: 
   </div>
 </footer>
 
-
 <script>
+/* ===== Génère la sidebar + les articles à partir de blog-posts.js ===== */
+(function renderBlog(){
+  const list = document.getElementById('blog-sidebar-list');
+  const main = document.getElementById('blog-main');
+  if(!list || !main || typeof BLOG_POSTS === 'undefined') return;
+
+  list.innerHTML = BLOG_POSTS.map((p, i) => `
+    <li><a href="#${p.id}"${i===0 ? ' class="active"' : ''}>${p.title}</a></li>
+  `).join('');
+
+  main.innerHTML = BLOG_POSTS.map(p => `
+    <article class="blog-post reveal" id="${p.id}">
+      <a href="#${p.id}" class="blog-post-title">${p.title}</a>
+      <div class="blog-post-meta">${p.date} · ${p.readingTime}</div>
+      <div class="blog-post-authors">
+        <div class="blog-author">
+          <div class="blog-author-avatar">${p.author.charAt(0)}</div>
+          <div>
+            <div class="blog-author-name">${p.author}</div>
+            <div class="blog-author-role">${p.authorRole}</div>
+          </div>
+        </div>
+      </div>
+      <p class="blog-post-excerpt">${p.excerpt}</p>
+      <div class="blog-post-thumb"><span>${p.icon}</span></div>
+      <div class="blog-post-footer">
+        <div class="blog-tags"><span class="blog-tag">${p.tag}</span></div>
+        <a href="#${p.id}" class="blog-post-more">Lire plus →</a>
+      </div>
+    </article>
+  `).join('');
+})();
+
 const cur = document.getElementById('cur');
 const ring = document.getElementById('cur-ring');
 let mx=0,my=0,rx=0,ry=0;
@@ -504,6 +411,19 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
     }
   });
 });
+/* Sidebar: surligne le lien de la section visible */
+const sideLinks = document.querySelectorAll('.blog-sidebar-list a');
+const posts = document.querySelectorAll('.blog-post');
+const sideObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      sideLinks.forEach(l=>l.classList.remove('active'));
+      const match = document.querySelector('.blog-sidebar-list a[href="#'+e.target.id+'"]');
+      if(match) match.classList.add('active');
+    }
+  });
+},{rootMargin:'-20% 0px -70% 0px'});
+posts.forEach(p=>sideObs.observe(p));
 </script>
 </body>
 </html>
