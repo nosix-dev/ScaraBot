@@ -4,7 +4,7 @@
 <link rel="icon" type="image/png" href="logo.png">
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>ScaraBot The Ultimate Bot</title>
+<title>ScaraBot — Sécurisez et animez votre serveur Discord</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Syne:wght@700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -23,6 +23,7 @@
   --faint:    #5a6070;
   --white:    #ffffff;
   --discord:  #5865F2;
+  --gold:     #f59e0b;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; font-size: 16px; }
@@ -48,6 +49,14 @@ body {
   transform: translate(-50%,-50%);
   transition: width .22s, height .22s, border-color .22s;
 }
+/* ANNOUNCEMENT BAR */
+.announce {
+  background: var(--deep); border-bottom: 1px solid var(--border);
+  padding: 10px 6vw; text-align: center;
+  font-size: 12px; letter-spacing: .5px; color: var(--muted);
+}
+.announce a { color: var(--blue-lt); text-decoration: none; font-weight: 600; }
+.announce a:hover { text-decoration: underline; }
 /* TOPBAR */
 .topbar {
   background: var(--deep); border-bottom: 1px solid var(--border);
@@ -78,8 +87,8 @@ nav {
 .nav-logo {
   width: 40px; height: 40px; background: var(--blue);
   border-radius: 12px; display: flex; align-items: center; justify-content: center;
+  font-family:'Syne',sans-serif; font-weight:800; color:#fff; font-size:16px;
 }
-.nav-logo svg { width: 24px; height: 24px; fill: #fff; }
 .nav-wordmark { display: flex; flex-direction: column; gap: 1px; }
 .nav-wordmark .abbr { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--white); letter-spacing: 3px; line-height: 1; }
 .nav-wordmark .full { font-size: 9px; letter-spacing: 3px; color: var(--blue-lt); text-transform: uppercase; font-weight: 500; }
@@ -95,6 +104,11 @@ nav {
 }
 .nav-links a:hover { color: var(--white); }
 .nav-links a:hover::after { transform: scaleX(1); }
+.nav-right { display: flex; align-items: center; gap: 14px; }
+.lang-pill {
+  font-size: 11px; letter-spacing: 1.5px; color: var(--muted);
+  border: 1px solid var(--border2); padding: 8px 14px; text-transform: uppercase; font-weight: 600;
+}
 .btn-nav {
   display: flex; align-items: center; gap: 9px;
   background: var(--blue); color: #fff; text-decoration: none;
@@ -108,7 +122,7 @@ nav {
 .hero {
   position: relative; min-height: calc(100vh - 104px);
   display: grid; grid-template-columns: 1fr 1fr;
-  align-items: center; padding: 80px 6vw; gap: 60px; overflow: hidden;
+  align-items: center; padding: 80px 6vw 40px; gap: 60px; overflow: hidden;
 }
 .hero-grid-bg {
   position: absolute; inset: 0;
@@ -133,19 +147,18 @@ nav {
 .hero-label::before { content: ''; width: 18px; height: 1px; background: var(--blue-lt); }
 .hero-title {
   font-family: 'Syne', sans-serif;
-  font-size: clamp(44px, 5.5vw, 78px); font-weight: 800;
-  line-height: 1.0; letter-spacing: -1px; color: var(--white); margin-bottom: 28px;
+  font-size: clamp(40px, 5vw, 70px); font-weight: 800;
+  line-height: 1.05; letter-spacing: -1px; color: var(--white); margin-bottom: 28px;
   opacity: 0; animation: fadeRight .7s .25s forwards;
 }
 .hero-title .line-blue { color: var(--blue-lt); }
-.hero-title .line-outline { -webkit-text-stroke: 1px rgba(255,255,255,.25); color: transparent; }
 .hero-desc {
   font-size: 15px; font-weight: 300; line-height: 1.9; color: var(--muted);
-  max-width: 460px; margin-bottom: 48px;
+  max-width: 460px; margin-bottom: 40px;
   opacity: 0; animation: fadeRight .7s .4s forwards;
 }
 .hero-actions {
-  display: flex; gap: 14px; flex-wrap: wrap;
+  display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 52px;
   opacity: 0; animation: fadeRight .7s .55s forwards;
 }
 .btn-primary {
@@ -166,6 +179,15 @@ nav {
   border: 1px solid var(--border2); transition: border-color .2s, color .2s;
 }
 .btn-ghost:hover { border-color: var(--blue-lt); color: var(--blue-lt); }
+/* LOGO MARQUEE */
+.marquee-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--faint); font-weight: 600; margin-bottom: 18px; opacity: 0; animation: fadeRight .7s .65s forwards; }
+.marquee-wrap { position: relative; width: 100%; overflow: hidden; opacity: 0; animation: fadeRight .7s .7s forwards; mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent); }
+.marquee-track { display: flex; gap: 40px; width: max-content; animation: scrollX 34s linear infinite; }
+.marquee-item { display: flex; align-items: center; gap: 10px; padding: 10px 18px; border: 1px solid var(--border); background: var(--panel); white-space: nowrap; }
+.marquee-item .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue-lt); flex-shrink: 0; }
+.marquee-item .mq-name { font-size: 12px; font-weight: 600; color: var(--text); }
+.marquee-item .mq-count { font-size: 10px; color: var(--faint); letter-spacing: .5px; }
+@keyframes scrollX { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 /* PANEL */
 .hero-panel { position: relative; z-index: 1; opacity: 0; animation: fadeLeft .8s .5s forwards; }
 .metrics-board {
@@ -199,6 +221,7 @@ nav {
 /* SECTION */
 .section { padding: 120px 6vw; position: relative; }
 .section-intro { margin-bottom: 70px; }
+.section-intro.center { text-align: center; display:flex; flex-direction:column; align-items:center; }
 .eyebrow {
   display: inline-flex; align-items: center; gap: 12px;
   font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
@@ -211,10 +234,19 @@ nav {
 }
 .section-p { font-size: 15px; font-weight: 300; color: var(--muted); line-height: 1.9; max-width: 520px; margin-top: 18px; }
 .rule { height: 1px; background: var(--border); margin: 0 6vw; }
+/* STATS */
+.stats-section { background: var(--deep); }
+.stats-grid { display: grid; grid-template-columns: repeat(4,1fr); border: 1px solid var(--border); margin-top: 60px; }
+.stat-cell { padding: 44px 32px; border-right: 1px solid var(--border); text-align: center; }
+.stat-cell:last-child { border-right: none; }
+.stat-val { font-family:'Syne',sans-serif; font-size: 44px; font-weight: 800; color: var(--blue-lt); line-height: 1; }
+.stat-val .unit { font-size: 22px; color: var(--white); }
+.stat-key { margin-top: 12px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); font-weight: 600; }
 /* FEATURES GRID */
 .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--border); }
-.feature { padding: 52px 40px; border-right: 1px solid var(--border); position: relative; overflow: hidden; transition: background .3s; }
-.feature:last-child { border-right: none; }
+.feature { padding: 52px 40px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); position: relative; overflow: hidden; transition: background .3s; }
+.feature:nth-child(3n) { border-right: none; }
+.feature:nth-last-child(-n+3) { border-bottom: none; }
 .feature::after { content: ''; position: absolute; bottom: 0; left: 40px; right: 40px; height: 1px; background: var(--blue-lt); transform: scaleX(0); transform-origin: left; transition: transform .5s; }
 .feature:hover { background: var(--panel); }
 .feature:hover::after { transform: scaleX(1); }
@@ -222,21 +254,36 @@ nav {
 .feature-icon { font-size: 32px; margin-bottom: 20px; display: block; }
 .feature-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--white); letter-spacing: -.3px; margin-bottom: 14px; }
 .feature-text { font-size: 14px; font-weight: 300; color: var(--muted); line-height: 1.8; }
-/* COMMANDES */
-.cmds-section { background: var(--deep); }
-.cmds-table { width: 100%; border-collapse: collapse; margin-top: 52px; }
-.cmds-table thead tr { border-bottom: 1px solid var(--border2); }
-.cmds-table th { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 16px 24px; text-align: left; }
-.cmds-table th:first-child { padding-left: 0; }
-.cmds-table tbody tr { border-bottom: 1px solid var(--border); transition: background .2s; }
-.cmds-table tbody tr:hover { background: var(--panel); }
-.cmds-table td { padding: 22px 24px; font-size: 14px; color: var(--text); vertical-align: middle; }
-.cmds-table td:first-child { padding-left: 0; }
-.cmd-pill { display: inline-flex; align-items: center; gap: 8px; }
-.cmd-name { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--blue-lt); background: rgba(140,191,201,.08); border: 1px solid var(--border); padding: 4px 12px; }
-.cmd-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(140,191,201,.08); border: 1px solid var(--border); padding: 4px 12px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--blue-lt); letter-spacing: 1px; }
-.cmd-badge.premium { background: rgba(245,158,11,.08); border-color: rgba(245,158,11,.2); color: #f59e0b; }
-.cmd-desc { font-size: 13px; font-weight: 300; color: var(--muted); }
+.feature-link { display:inline-flex; align-items:center; gap:8px; margin-top:18px; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; font-weight:700; color:var(--blue-lt); text-decoration:none; }
+/* PRICING */
+.pricing-section { background: var(--deep); }
+.pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 60px; }
+.plan {
+  background: var(--panel); border: 1px solid var(--border2); padding: 40px 34px;
+  display: flex; flex-direction: column; position: relative; overflow: hidden;
+}
+.plan.featured { border-color: var(--blue-lt); box-shadow: 0 0 0 1px var(--blue-lt), 0 24px 60px rgba(140,191,201,.15); }
+.plan.featured::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--blue), var(--blue-lt)); }
+.plan-tag { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--blue-lt); font-weight: 700; margin-bottom: 14px; }
+.plan-name { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; color: var(--white); margin-bottom: 8px; }
+.plan-price { font-family: 'Syne', sans-serif; font-size: 40px; font-weight: 800; color: var(--white); margin-bottom: 4px; }
+.plan-price .per { font-size: 13px; color: var(--muted); font-weight: 400; }
+.plan-sub { font-size: 12px; color: var(--muted); font-weight: 300; margin-bottom: 28px; }
+.plan-list { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; flex-grow: 1; }
+.plan-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; font-weight: 300; color: var(--text); line-height: 1.5; }
+.plan-list li::before { content: '✓'; color: var(--blue-lt); font-weight: 700; flex-shrink: 0; }
+.plan .btn-primary, .plan .btn-ghost { justify-content: center; width: 100%; }
+/* BLOG */
+.blog-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 60px; }
+.blog-card { background: var(--panel); border: 1px solid var(--border); text-decoration: none; display: flex; flex-direction: column; overflow: hidden; transition: border-color .25s, transform .25s; }
+.blog-card:hover { border-color: var(--blue-lt); transform: translateY(-4px); }
+.blog-thumb { height: 150px; background: linear-gradient(135deg, var(--card), var(--panel)); position: relative; display:flex; align-items:center; justify-content:center; border-bottom: 1px solid var(--border); }
+.blog-thumb::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 24px 24px; }
+.blog-thumb span { position: relative; font-size: 34px; }
+.blog-body { padding: 26px 26px 28px; }
+.blog-date { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.5px; color: var(--blue-lt); text-transform: uppercase; margin-bottom: 12px; }
+.blog-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800; color: var(--white); line-height: 1.35; margin-bottom: 10px; }
+.blog-desc { font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.7; }
 /* CTA */
 .cta-block { position: relative; overflow: hidden; background: var(--ink); border-top: 1px solid var(--border); }
 .cta-block::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 50% 100%, rgba(140,191,201,.1) 0%, transparent 70%); pointer-events: none; }
@@ -265,9 +312,13 @@ nav {
 .checklist li { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; font-weight: 300; color: var(--muted); line-height: 1.5; }
 .checklist li::before { content: '→'; color: var(--blue-lt); font-size: 14px; flex-shrink: 0; margin-top: 1px; }
 /* FOOTER */
-footer { background: var(--deep); border-top: 1px solid var(--border); padding: 60px 6vw 40px; }
-.footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px; padding-bottom: 52px; border-bottom: 1px solid var(--border); margin-bottom: 36px; }
+footer { background: var(--deep); border-top: 1px solid var(--border); padding: 70px 6vw 40px; }
+.footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; padding-bottom: 52px; border-bottom: 1px solid var(--border); margin-bottom: 36px; }
+.footer-brand { display:flex; align-items:center; gap:14px; text-decoration:none; }
 .footer-tagline { font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.8; margin-top: 20px; max-width: 280px; }
+.footer-socials { display:flex; gap:14px; margin-top:24px; }
+.footer-socials a { width: 36px; height: 36px; border: 1px solid var(--border2); display:flex; align-items:center; justify-content:center; text-decoration:none; color: var(--muted); transition: border-color .2s, color .2s; font-size: 14px; }
+.footer-socials a:hover { border-color: var(--blue-lt); color: var(--blue-lt); }
 .footer-col-title { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--white); font-weight: 700; margin-bottom: 20px; }
 .footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
 .footer-links a { font-size: 13px; font-weight: 300; color: var(--muted); text-decoration: none; transition: color .2s; }
@@ -286,15 +337,21 @@ footer { background: var(--deep); border-top: 1px solid var(--border); padding: 
 /* RESPONSIVE */
 @media (max-width: 980px) {
   .hero { grid-template-columns: 1fr; min-height: auto; }
-  .features-grid { grid-template-columns: 1fr; }
-  .feature { border-right: none; border-bottom: 1px solid var(--border); }
+  .features-grid, .pricing-grid, .blog-grid { grid-template-columns: 1fr; }
+  .feature { border-right: none !important; }
+  .feature:not(:last-child) { border-bottom: 1px solid var(--border) !important; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .stat-cell:nth-child(2n) { border-right: none; }
+  .stat-cell:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
   .cta-inner { grid-template-columns: 1fr; }
   .footer-top { grid-template-columns: 1fr 1fr; }
   .nav-links { display: none; }
 }
 @media (max-width: 580px) {
-  .topbar { display: none; }
+  .topbar, .announce { display: none; }
   .footer-top { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr; }
+  .stat-cell { border-right: none !important; border-bottom: 1px solid var(--border); }
 }
 </style>
 </head>
@@ -303,10 +360,13 @@ footer { background: var(--deep); border-top: 1px solid var(--border); padding: 
 <div id="cur"></div>
 <div id="cur-ring"></div>
 
+<!-- ANNONCE -->
+<div class="announce">La mise à jour <a href="#blog">ScaraBot v4.2.1</a> est disponible dès maintenant !</div>
+
 <!-- TOPBAR -->
 <div class="topbar">
   <div style="display:flex;align-items:center;gap:28px">
-    <div class="topbar-item">Version : <span>4.5.0</span></div>
+    <div class="topbar-item">Version : <span>4.2.1</span></div>
     <div class="topbar-item">Commandes : <span>90+</span></div>
   </div>
   <div class="topbar-status">Bot en ligne</div>
@@ -315,38 +375,48 @@ footer { background: var(--deep); border-top: 1px solid var(--border); padding: 
 <!-- NAV -->
 <nav>
   <a href="#" class="nav-brand">
-    <img src="logo.png" alt="ScaraBot" style="width:40px;height:40px;object-fit:contain;display:block;" />
+    <div class="nav-logo">S</div>
     <div class="nav-wordmark">
       <span class="abbr">ScaraBot</span>
       <span class="full">Le bot Discord complet</span>
     </div>
   </a>
   <ul class="nav-links">
+    <li><a href="#">Accueil</a></li>
     <li><a href="#features">Fonctionnalités</a></li>
-    <li><a href="#invite">Inviter</a></li>
+    <li><a href="#pricing">Tarifs</a></li>
+    <li><a href="#blog">Blog</a></li>
+    <li><a href="#invite">Support</a></li>
   </ul>
-  <a href="https://discord.com/oauth2/authorize?client_id=1403513450273177772&permissions=8&integration_type=0&scope=bot%20applications.commands" target="_blank" class="btn-nav">
-    Inviter le bot →
-  </a>
+  <div class="nav-right">
+    <div class="lang-pill">FR</div>
+    <a href="https://discord.com/oauth2/authorize?client_id=1403513450273177772&permissions=8&integration_type=0&scope=bot%20applications.commands" target="_blank" class="btn-nav">
+      Inviter le bot →
+    </a>
+  </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero" id="about">
   <div class="hero-grid-bg"></div>
   <div class="hero-content">
-    <div class="hero-label">Bot Discord · Modération · Premium</div>
+    <div class="hero-label">Utilisé par plusieurs milliers de serveurs</div>
     <h1 class="hero-title">
-      Le bot<br>
-      <span class="line-blue">Discord</span><br>
-      <span class="line-outline">complet.</span>
+      Le bot Discord<br>
+      <span class="line-blue">tout-en-un</span><br>
+      pour votre serveur.
     </h1>
-    <p class="hero-desc">ScaraBot est un bot Discord tout-en-un : modération avancée, système XP, tickets, giveaways, notifications YouTube, traduction automatique, et bien plus encore.</p>
+    <p class="hero-desc">ScaraBot protège et anime votre serveur : modération avancée, système XP, tickets, giveaways, notifications YouTube et traduction automatique — tout est intégré, gratuitement.</p>
     <div class="hero-actions">
       <a href="https://discord.com/oauth2/authorize?client_id=1403513450273177772&permissions=8&integration_type=0&scope=bot%20applications.commands" target="_blank" class="btn-primary">
-        <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.5 14.5l-5-3V7h1.5v5.5l4 2.5-0.5.5z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-        Inviter ScaraBot
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        Ajouter à Discord
       </a>
       <a href="#features" class="btn-ghost">Voir les fonctionnalités →</a>
+    </div>
+    <div class="marquee-label">Ils nous font confiance</div>
+    <div class="marquee-wrap">
+      <div class="marquee-track" id="marquee-track"></div>
     </div>
   </div>
   <div class="hero-panel">
@@ -387,12 +457,40 @@ footer { background: var(--deep); border-top: 1px solid var(--border); padding: 
 
 <div class="rule"></div>
 
+<!-- STATS -->
+<section class="section stats-section">
+  <div class="section-intro reveal">
+    <div class="eyebrow">Nos résultats ont un impact</div>
+    <h2 class="section-h">Des chiffres qui parlent<br>pour ScaraBot.</h2>
+  </div>
+  <div class="stats-grid reveal">
+    <div class="stat-cell">
+      <div class="stat-val">90<span class="unit">+</span></div>
+      <div class="stat-key">Commandes disponibles</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-val">24<span class="unit">/7</span></div>
+      <div class="stat-key">Bot en ligne</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-val">4<span class="unit">.2.1</span></div>
+      <div class="stat-key">Version stable</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-val">0<span class="unit">€</span></div>
+      <div class="stat-key">Fonctionnalités de base</div>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
 <!-- FEATURES -->
 <section class="section" id="features">
   <div class="section-intro reveal">
-    <div class="eyebrow">Ce que propose ScaraBot</div>
+    <div class="eyebrow">Nos fonctionnalités</div>
     <h2 class="section-h">Tout ce dont un serveur<br>Discord a besoin.</h2>
-    <p class="section-p">Un seul bot pour remplacer une dizaine d'autres. Modération, engagement, notifications — tout est intégré.</p>
+    <p class="section-p">Un seul bot pour remplacer une dizaine d'autres. Sécurité, engagement, notifications — tout est intégré.</p>
   </div>
   <div class="features-grid">
     <div class="feature reveal reveal-delay-1">
@@ -403,40 +501,140 @@ footer { background: var(--deep); border-top: 1px solid var(--border); padding: 
     </div>
     <div class="feature reveal reveal-delay-2">
       <div class="feature-num">02</div>
+      <span class="feature-icon">🚨</span>
+      <div class="feature-title">Blocage des raids</div>
+      <div class="feature-text">Détection des arrivées massives suspectes et verrouillage automatique du serveur avant que la situation ne dégénère.</div>
+    </div>
+    <div class="feature reveal reveal-delay-3">
+      <div class="feature-num">03</div>
+      <span class="feature-icon">🤖</span>
+      <div class="feature-title">Protection anti-bot</div>
+      <div class="feature-text">Filtrage des comptes automatisés et malveillants dès leur arrivée, pour garder un serveur sain.</div>
+    </div>
+    <div class="feature reveal reveal-delay-1">
+      <div class="feature-num">04</div>
       <span class="feature-icon">⚙️</span>
       <div class="feature-title">Automatisation totale</div>
       <div class="feature-text">Messages récurrents, messages planifiés, purge automatique, rôles temporaires, auto-réponses, traduction automatique, anniversaires.</div>
     </div>
+    <div class="feature reveal reveal-delay-2">
+      <div class="feature-num">05</div>
+      <span class="feature-icon">🎟️</span>
+      <div class="feature-title">Tickets & giveaways</div>
+      <div class="feature-text">Système de tickets complet pour le support, et giveaways configurables avec conditions et tirage automatique.</div>
+    </div>
     <div class="feature reveal reveal-delay-3">
-      <div class="feature-num">03</div>
+      <div class="feature-num">06</div>
       <span class="feature-icon">🔔</span>
       <div class="feature-title">Notifications & XP</div>
-      <div class="feature-text">Suivi YouTube, blogs RSS, clips Medal.tv. Système XP complet avec niveaux, classement, récompenses de rôles et multiplicateur configurable.</div>
+      <div class="feature-text">Suivi YouTube, flux RSS. Système XP complet avec niveaux, classement, récompenses de rôles et multiplicateur configurable.</div>
     </div>
   </div>
-</section>
-
-<div class="rule"></div>
-
-</table>
-</section>
-
-<div class="rule"></div>
-
-  <!-- Compteur total -->
   <div class="reveal" style="margin-top:40px;padding:24px 32px;border:1px solid var(--border2);background:var(--panel);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
     <div style="display:flex;align-items:center;gap:16px">
       <div style="font-family:'Syne',sans-serif;font-size:40px;font-weight:800;color:var(--blue-lt)">90<span style="font-size:20px;color:var(--muted)">+</span></div>
       <div>
         <div style="font-size:14px;font-weight:600;color:var(--white)">Commandes disponibles</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:2px">Dont 50+ commandes Premium exclusives</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">Dont plusieurs commandes Premium exclusives</div>
       </div>
     </div>
     <a href="https://discord.com/oauth2/authorize?client_id=1403513450273177772&permissions=8&integration_type=0&scope=bot%20applications.commands" target="_blank" class="btn-primary" style="padding:12px 28px">
       Inviter ScaraBot →
     </a>
   </div>
+</section>
 
+<div class="rule"></div>
+
+<!-- PRICING -->
+<section class="section pricing-section" id="pricing">
+  <div class="section-intro reveal">
+    <div class="eyebrow">Garder une longueur d'avance</div>
+    <h2 class="section-h">Un tarif pour<br>chaque serveur.</h2>
+    <p class="section-p">Ajoutez ScaraBot et commencez à sécuriser et animer votre serveur dès aujourd'hui.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="plan reveal reveal-delay-1">
+      <div class="plan-tag">Basic</div>
+      <div class="plan-name">Gratuit</div>
+      <div class="plan-price">0€</div>
+      <div class="plan-sub">L'essentiel assuré pour toujours</div>
+      <ul class="plan-list">
+        <li>Modération complète (kick, ban, mute, warns)</li>
+        <li>Anti-spam & anti-raid</li>
+        <li>Système XP et niveaux</li>
+        <li>Tickets & giveaways</li>
+        <li>Et bien plus encore...</li>
+      </ul>
+      <a href="https://discord.com/oauth2/authorize?client_id=1403513450273177772&permissions=8&integration_type=0&scope=bot%20applications.commands" target="_blank" class="btn-ghost">Ajouter à Discord</a>
+    </div>
+    <div class="plan featured reveal reveal-delay-2">
+      <div class="plan-tag">Premium</div>
+      <div class="plan-name">Abonnement</div>
+      <div class="plan-price">2,99 $<span class="per"> / mois</span></div>
+      <div class="plan-sub">Offre de lancement réservée aux premiers abonnés</div>
+      <ul class="plan-list">
+        <li>Toutes les fonctionnalités Basic</li>
+        <li>Profil du bot personnalisable</li>
+        <li>Commandes exclusives</li>
+        <li>Notifications YouTube & RSS avancées</li>
+        <li>Accès à la bêta publique</li>
+        <li>Rôle exclusif sur notre serveur</li>
+      </ul>
+      <a href="#invite" class="btn-primary">S'abonner via Discord</a>
+    </div>
+    <div class="plan reveal reveal-delay-3">
+      <div class="plan-tag">Business</div>
+      <div class="plan-name">Sur demande</div>
+      <div class="plan-price">—</div>
+      <div class="plan-sub">Pour les projets aux exigences élevées</div>
+      <ul class="plan-list">
+        <li>Toutes les fonctionnalités Premium</li>
+        <li>Instance dédiée et isolée</li>
+        <li>Fonctionnalités sur mesure</li>
+        <li>Intégration avec vos outils</li>
+        <li>Support prioritaire</li>
+      </ul>
+      <a href="#invite" class="btn-ghost">Nous contacter</a>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- BLOG -->
+<section class="section" id="blog">
+  <div class="section-intro reveal">
+    <div class="eyebrow">Blog</div>
+    <h2 class="section-h">Les dernières<br>actualités.</h2>
+    <p class="section-p">Nouveautés, mises à jour et coulisses du développement de ScaraBot.</p>
+  </div>
+  <div class="blog-grid">
+    <a href="#" class="blog-card reveal reveal-delay-1">
+      <div class="blog-thumb"><span>🆕</span></div>
+      <div class="blog-body">
+        <div class="blog-date">Version 4.2.1</div>
+        <div class="blog-title">Refonte du système de modération et nouveaux logs</div>
+        <div class="blog-desc">Découvrez les nouvelles commandes de modération et l'amélioration des journaux d'événements.</div>
+      </div>
+    </a>
+    <a href="#" class="blog-card reveal reveal-delay-2">
+      <div class="blog-thumb"><span>⭐</span></div>
+      <div class="blog-body">
+        <div class="blog-date">Premium</div>
+        <div class="blog-title">Lancement de l'offre Premium ScaraBot</div>
+        <div class="blog-desc">Toutes les nouveautés exclusives disponibles avec l'abonnement Premium.</div>
+      </div>
+    </a>
+    <a href="#" class="blog-card reveal reveal-delay-3">
+      <div class="blog-thumb"><span>📈</span></div>
+      <div class="blog-body">
+        <div class="blog-date">Coulisses</div>
+        <div class="blog-title">Comment ScaraBot gère plusieurs serveurs simultanément</div>
+        <div class="blog-desc">Un aperçu de l'architecture technique derrière la stabilité du bot.</div>
+      </div>
+    </a>
+  </div>
 </section>
 
 <!-- INVITE CTA -->
@@ -462,7 +660,7 @@ footer { background: var(--deep); border-top: 1px solid var(--border); padding: 
           </div>
           <div>
             <div class="bc-name">ScaraBot</div>
-            <div class="bc-sub">Bot Discord certifié · v4.2.1</div>
+            <div class="bc-sub">Bot Discord · v4.2.1</div>
           </div>
         </div>
         <div class="bc-stats">
@@ -480,7 +678,7 @@ footer { background: var(--deep); border-top: 1px solid var(--border); padding: 
           </div>
         </div>
         <a href="https://discord.com/oauth2/authorize?client_id=1403513450273177772&permissions=8&integration_type=0&scope=bot%20applications.commands" target="_blank" class="btn-invite">
-          <svg viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
           Inviter ScaraBot gratuitement
         </a>
       </div>
@@ -497,8 +695,53 @@ footer { background: var(--deep); border-top: 1px solid var(--border); padding: 
 
 <!-- FOOTER -->
 <footer>
+  <div class="footer-top">
+    <div>
+      <a href="#" class="footer-brand">
+        <div class="nav-logo">S</div>
+        <div class="nav-wordmark">
+          <span class="abbr">ScaraBot</span>
+          <span class="full">Le bot Discord complet</span>
+        </div>
+      </a>
+      <p class="footer-tagline">ScaraBot est un bot Discord multi-serveurs qui protège et anime votre communauté : modération, XP, tickets, giveaways et notifications, le tout gratuitement.</p>
+      <div class="footer-socials">
+        <a href="#" title="Discord">D</a>
+        <a href="#" title="X / Twitter">X</a>
+        <a href="#" title="YouTube">Y</a>
+        <a href="#" title="GitHub">G</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Navigation</div>
+      <ul class="footer-links">
+        <li><a href="#">Accueil</a></li>
+        <li><a href="#features">Fonctionnalités</a></li>
+        <li><a href="#pricing">Tarifs</a></li>
+        <li><a href="#blog">Blog</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Ressources</div>
+      <ul class="footer-links">
+        <li><a href="#">Documentation</a></li>
+        <li><a href="#invite">Support</a></li>
+        <li><a href="#">Suggestions</a></li>
+        <li><a href="#invite">Ajouter le bot</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Informations</div>
+      <ul class="footer-links">
+        <li><a href="#">Mentions légales</a></li>
+        <li><a href="#">Conditions d'utilisation</a></li>
+        <li><a href="#">Politique de confidentialité</a></li>
+        <li><a href="#">Politique des cookies</a></li>
+      </ul>
+    </div>
+  </div>
   <div class="footer-bottom">
-    <div class="footer-copy">© 2026 ScaraBot — Développé par NOSIX · Tous droits réservés</div>
+    <div class="footer-copy">© 2026 ScaraBot — Développé par Nosix Studio · Tous droits réservés</div>
     <div class="footer-legal">Bot non officiel · Discord est une marque de Discord Inc.</div>
   </div>
 </footer>
@@ -519,11 +762,28 @@ const obs=new IntersectionObserver(entries=>{
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click',e=>{
-    e.preventDefault();
-    const t=document.querySelector(a.getAttribute('href'));
-    if(t)t.scrollIntoView({behavior:'smooth',block:'start'});
+    const target = a.getAttribute('href');
+    if(target.length>1){
+      e.preventDefault();
+      const t=document.querySelector(target);
+      if(t)t.scrollIntoView({behavior:'smooth',block:'start'});
+    }
   });
 });
+/* Marquee: liste de serveurs génériques, dupliquée pour boucle infinie */
+const servers = [
+  {name:'Communauté Gaming FR', count:'12 500 membres'},
+  {name:'Team Créateurs', count:'8 300 membres'},
+  {name:'Le Repaire', count:'21 000 membres'},
+  {name:'Studio Indé', count:'4 100 membres'},
+  {name:'Discord Central', count:'15 700 membres'},
+  {name:'Zone Multijoueur', count:'9 800 membres'},
+  {name:'Le Café Discord', count:'6 200 membres'},
+  {name:'Communauté RP', count:'11 400 membres'},
+];
+const track = document.getElementById('marquee-track');
+const doubled = [...servers, ...servers];
+track.innerHTML = doubled.map(s=>`<div class="marquee-item"><span class="dot"></span><span class="mq-name">${s.name}</span><span class="mq-count">${s.count}</span></div>`).join('');
 </script>
 </body>
 </html>
