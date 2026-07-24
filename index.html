@@ -770,20 +770,54 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
     }
   });
 });
-/* Marquee: liste de serveurs génériques, dupliquée pour boucle infinie */
-const servers = [
-  {name:'Communauté Gaming FR', count:'12 500 membres'},
-  {name:'Team Créateurs', count:'8 300 membres'},
-  {name:'Le Repaire', count:'21 000 membres'},
-  {name:'Studio Indé', count:'4 100 membres'},
-  {name:'Discord Central', count:'15 700 membres'},
-  {name:'Zone Multijoueur', count:'9 800 membres'},
-  {name:'Le Café Discord', count:'6 200 membres'},
-  {name:'Communauté RP', count:'11 400 membres'},
-];
+/* Marquee: liste des vrais serveurs du bot, récupérée depuis l'API backend */
+// Remplace cette URL par celle de ton API une fois déployée (voir backend/server.js)
+const SERVERS_API_URL = 'https://api.tondomaine.com/api/servers?limit=12';
+
 const track = document.getElementById('marquee-track');
-const doubled = [...servers, ...servers];
-track.innerHTML = doubled.map(s=>`<div class="marquee-item"><span class="dot"></span><span class="mq-name">${s.name}</span><span class="mq-count">${s.count}</span></div>`).join('');
+const marqueeLabel = document.querySelector('.marquee-label');
+
+const fallbackServers = [
+  {name:'Communauté Gaming FR', memberCount:12500},
+  {name:'Team Créateurs', memberCount:8300},
+  {name:'Le Repaire', memberCount:21000},
+  {name:'Studio Indé', memberCount:4100},
+  {name:'Discord Central', memberCount:15700},
+  {name:'Zone Multijoueur', memberCount:9800},
+];
+
+function formatCount(n){
+  return n.toLocaleString('fr-FR') + ' membres';
+}
+
+function renderServers(servers){
+  const doubled = [...servers, ...servers];
+  track.innerHTML = doubled.map(s => `
+    <div class="marquee-item">
+      ${s.icon ? `<img src="${s.icon}" alt="" style="width:20px;height:20px;border-radius:50%;flex-shrink:0" />` : `<span class="dot"></span>`}
+      <span class="mq-name">${s.name}</span>
+      <span class="mq-count">${formatCount(s.memberCount)}</span>
+    </div>
+  `).join('');
+}
+
+async function loadServers(){
+  try {
+    const res = await fetch(SERVERS_API_URL);
+    if(!res.ok) throw new Error('API indisponible');
+    const data = await res.json();
+    const servers = (data.servers || []).sort((a,b)=>b.memberCount-a.memberCount);
+    if(servers.length === 0) throw new Error('Aucun serveur reçu');
+    renderServers(servers);
+    if(marqueeLabel) marqueeLabel.textContent = `Détecté en direct sur ${data.total ?? servers.length} serveurs`;
+  } catch (err) {
+    // Repli : tant que l'API n'est pas déployée, on affiche des données d'exemple
+    renderServers(fallbackServers);
+    if(marqueeLabel) marqueeLabel.textContent = 'Ils nous font confiance';
+  }
+}
+
+loadServers();
 </script>
 </body>
 </html>
