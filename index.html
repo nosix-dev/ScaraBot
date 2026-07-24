@@ -179,15 +179,6 @@ nav {
   border: 1px solid var(--border2); transition: border-color .2s, color .2s;
 }
 .btn-ghost:hover { border-color: var(--blue-lt); color: var(--blue-lt); }
-/* LOGO MARQUEE */
-.marquee-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--faint); font-weight: 600; margin-bottom: 18px; opacity: 0; animation: fadeRight .7s .65s forwards; }
-.marquee-wrap { position: relative; width: 100%; overflow: hidden; opacity: 0; animation: fadeRight .7s .7s forwards; mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent); }
-.marquee-track { display: flex; gap: 40px; width: max-content; animation: scrollX 34s linear infinite; }
-.marquee-item { display: flex; align-items: center; gap: 10px; padding: 10px 18px; border: 1px solid var(--border); background: var(--panel); white-space: nowrap; }
-.marquee-item .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue-lt); flex-shrink: 0; }
-.marquee-item .mq-name { font-size: 12px; font-weight: 600; color: var(--text); }
-.marquee-item .mq-count { font-size: 10px; color: var(--faint); letter-spacing: .5px; }
-@keyframes scrollX { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 /* PANEL */
 .hero-panel { position: relative; z-index: 1; opacity: 0; animation: fadeLeft .8s .5s forwards; }
 .metrics-board {
@@ -413,10 +404,6 @@ footer { background: var(--deep); border-top: 1px solid var(--border); padding: 
         Ajouter à Discord
       </a>
       <a href="#features" class="btn-ghost">Voir les fonctionnalités →</a>
-    </div>
-    <div class="marquee-label">Ils nous font confiance</div>
-    <div class="marquee-wrap">
-      <div class="marquee-track" id="marquee-track"></div>
     </div>
   </div>
   <div class="hero-panel">
@@ -770,54 +757,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
     }
   });
 });
-/* Marquee: liste des vrais serveurs du bot, récupérée depuis l'API backend */
-// Remplace cette URL par celle de ton API une fois déployée (voir backend/server.js)
-const SERVERS_API_URL = 'https://api.tondomaine.com/api/servers?limit=12';
-
-const track = document.getElementById('marquee-track');
-const marqueeLabel = document.querySelector('.marquee-label');
-
-const fallbackServers = [
-  {name:'Communauté Gaming FR', memberCount:12500},
-  {name:'Team Créateurs', memberCount:8300},
-  {name:'Le Repaire', memberCount:21000},
-  {name:'Studio Indé', memberCount:4100},
-  {name:'Discord Central', memberCount:15700},
-  {name:'Zone Multijoueur', memberCount:9800},
-];
-
-function formatCount(n){
-  return n.toLocaleString('fr-FR') + ' membres';
-}
-
-function renderServers(servers){
-  const doubled = [...servers, ...servers];
-  track.innerHTML = doubled.map(s => `
-    <div class="marquee-item">
-      ${s.icon ? `<img src="${s.icon}" alt="" style="width:20px;height:20px;border-radius:50%;flex-shrink:0" />` : `<span class="dot"></span>`}
-      <span class="mq-name">${s.name}</span>
-      <span class="mq-count">${formatCount(s.memberCount)}</span>
-    </div>
-  `).join('');
-}
-
-async function loadServers(){
-  try {
-    const res = await fetch(SERVERS_API_URL);
-    if(!res.ok) throw new Error('API indisponible');
-    const data = await res.json();
-    const servers = (data.servers || []).sort((a,b)=>b.memberCount-a.memberCount);
-    if(servers.length === 0) throw new Error('Aucun serveur reçu');
-    renderServers(servers);
-    if(marqueeLabel) marqueeLabel.textContent = `Détecté en direct sur ${data.total ?? servers.length} serveurs`;
-  } catch (err) {
-    // Repli : tant que l'API n'est pas déployée, on affiche des données d'exemple
-    renderServers(fallbackServers);
-    if(marqueeLabel) marqueeLabel.textContent = 'Ils nous font confiance';
-  }
-}
-
-loadServers();
 </script>
 </body>
 </html>
